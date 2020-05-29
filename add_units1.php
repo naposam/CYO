@@ -1,0 +1,139 @@
+   <?php include_once ('LoaduserForm.php');?>
+    <?php include('validation.php');?>
+   <div class="row-fluid">
+                        <!-- block -->
+                        <div class="block">
+                            <div class="navbar navbar-inner block-header">
+                                <div class="muted pull-left"><i class="icon-plus-sign icon-large"></i> Unit</div>
+                            </div>
+                            <div class="block-content collapse in">
+                                <div class="span12">
+								<form method="post" id="add_unit_form">
+										<div class="control-group">
+                                          <div class="controls">
+										  <label style="color: white; font-weight: bolder;">Unit</label>
+										  <input class="input focused"  name="unit_name" id="focusedInput" type="text" placeholder = "Units Name" required onkeyup="letteronly(this)">
+                                            
+                                          </div>
+                                        </div>
+                                        <div class="control-group">
+                                          <div class="controls">
+										  <label style="color: white; font-weight: bolder;">Region</label>
+                                           <select name="region" id="region"class="form-controls" onchange="region_change()" required="">
+                                           	<option selected="" disabled="">Select Region</option>
+                                            <?php echo fill_region($mysqli);?>
+										<!-- 
+										start of comment <?php 
+											$result = mysqli_query($mysqli,"select * from region ")or die(mysqli_error($mysqli));
+											while($row = mysqli_fetch_array($result)){
+											$reg_id = $row['reg_id'];
+											$name=$row['name'];		
+								         	?>
+								            <option value="<?php echo $reg_id;?>"> <?php echo $reg_id;?><?php echo" ";?><?php echo $name;?> </option>
+									        <?php }?>
+									    end of comment-->
+												
+											</select>
+                                          </div>
+                                        </div>	
+                                         <div class="control-group">
+                                          <div class="controls">
+										  <label style="color: white; font-weight: bolder;">Diocese</label>
+                                           <select name="diocese" id ="diocese" class="form-controls" onchange="diocese_change()" required="">
+                                           	<option selected="" disabled="">Select Diocese</option>
+											<?php echo fill_diocese($mysqli);?>
+										<!-- 
+										start of comment<?php 
+											$result = mysqli_query($mysqli,"select * from diocese ")or die(mysqli_error($mysqli));
+											while($row = mysqli_fetch_array($result)){
+											$diocese_id = $row['diocese_id'];
+											$name=$row['diocese_name'];		
+									       ?>
+								            <option value="<?php echo $diocese_id;?>"> <?php echo $diocese_id;?><?php echo" ";?><?php echo $name;?> </option>
+									        <?php }?>
+									    end of comment -->
+											</select>
+                                          </div>
+                                        </div>
+                                        <div class="control-group">
+                                          <div class="controls">
+										  <label style="color: white; font-weight: bolder;">Deanery</label>
+                                           <select name="deanery" class="form-controls" id="deanery" onchange="deanery_change()" required="">
+                                           	<option selected="" disabled="">Select Deanery</option>
+											<?php echo fill_deanery($mysqli);?>
+										<!-- 
+										start of comment<?php 
+											$result = mysqli_query($mysqli,"select * from deanery ")or die(mysqli_error($mysqli));
+											while($row = mysqli_fetch_array($result)){
+											$deanery_id = $row['deanery_id'];
+											$name=$row['deanery_name'];		
+									         ?>
+								            <option value="<?php echo $deanery_id;?>"> <?php echo $deanery_id;?><?php echo" ";?><?php echo $name;?> </option>
+									        <?php }?> 
+									    end of comment-->
+												
+											</select>
+                                          </div>
+                                        </div>
+
+                                        <div class="control-group">
+                                          <div class="controls">
+										  <label style="color: white; font-weight: bolder;">Parish</label>
+                                           <select name="parish" class="form-controls" id="parish" onchange="parish_change()" required>
+                                           	<option selected="" disabled="">Select Parish</option>
+											<?php echo fill_parish($mysqli);?>
+											
+										<!-- 
+										start of comment<?php 
+											$result = mysqli_query($mysqli,"select * from parish ")or die(mysqli_error($mysqli));
+											while($row = mysqli_fetch_array($result)){
+											$parish_id = $row['parish_id'];
+											$name=$row['parish_name'];		
+									          ?>
+								            <option value="<?php echo $parish_id;?>"> <?php echo $parish_id;?><?php echo" ";?><?php echo $name;?> </option>
+									        <?php }?> 
+									    end of comment-->
+												
+											</select>
+                                          </div>
+                                        </div>
+
+                                    
+										
+											<div class="control-group">
+                                          <div class="controls">
+												<button  data-placement="right" title="Click to Save" id="save" name="save" class="btn btn-inverse"><i class="icon-save icon-large"></i> Save</button>
+														<script type="text/javascript">
+														$(document).ready(function(){
+															$('#save').tooltip('show');
+															$('#save').tooltip('hide');
+														});
+														</script>
+                                          </div>
+                                        </div>
+                                </form>
+								</div>
+                            </div>
+                             <?php include ('Form_reg_main_ajax.php');?>
+                        </div>
+                        <!-- /block -->
+                    </div>
+		<script>
+			jQuery(document).ready(function($){
+				$("#add_unit_form").submit(function(e){
+					e.preventDefault();
+					var _this = $(e.target);
+					var formData = $(this).serialize();
+					$.ajax({
+						type: "POST",
+						url: "save_unit.php",
+						data: formData,
+						success: function(html){
+							$.jGrowl("Class Successfully  Added", { header: 'Class Added' });
+							window.location = 'add_units.php';  
+						}
+					});
+				});
+			});
+			</script>
+					
